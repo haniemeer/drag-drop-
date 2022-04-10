@@ -1,118 +1,70 @@
-const draggable_list = document.getElementById('draggable-list');
-const check = document.getElementById('check');
+let nameer=document.getElementById('name-error')
+let teler=document.getElementById('tel-error')
+let emailer=document.getElementById('email-error')
+let texter=document.getElementById('message-error')
+let submiter=document.getElementById('submit-error')
 
-const richestPeople = [
-  'Jeff Bezos',
-  'Bill Gates',
-  'Warren Buffett',
-  'Bernard Arnault',
-  'Carlos Slim Helu',
-  'Amancio Ortega',
-  'Larry Ellison',
-  'Mark Zuckerberg',
-  'Michael Bloomberg',
-  'Larry Page'
-];
+function validation(){
+    let nameerrorfunc=document.getElementById('contact-name').value;
 
-// Store listitems
-const listItems = [];
-
-let dragStartIndex;
-
-createList();
-
-// Insert list items into DOM
-function createList() {
-  [...richestPeople]
-    .map(a => ({ value: a, sort: Math.random() }))
-    .sort((a, b) => a.sort - b.sort)
-    .map(a => a.value)
-    .forEach((person, index) => {
-      const listItem = document.createElement('li');
-
-      listItem.setAttribute('data-index', index);
-
-      listItem.innerHTML = `
-        <span class="number">${index + 1}</span>
-        <div class="draggable" draggable="true">
-          <p class="person-name">${person}</p>
-          <i class="fas fa-grip-lines"></i>
-        </div>
-      `;
-
-      listItems.push(listItem);
-
-      draggable_list.appendChild(listItem);
-    });
-
-  addEventListeners();
-}
-
-function dragStart() {
-  // console.log('Event: ', 'dragstart');
-  dragStartIndex = +this.closest('li').getAttribute('data-index');
-}
-
-function dragEnter() {
-  // console.log('Event: ', 'dragenter');
-  this.classList.add('over');
-}
-
-function dragLeave() {
-  // console.log('Event: ', 'dragleave');
-  this.classList.remove('over');
-}
-
-function dragOver(e) {
-  // console.log('Event: ', 'dragover');
-  e.preventDefault();
-}
-
-function dragDrop() {
-  // console.log('Event: ', 'drop');
-  const dragEndIndex = +this.getAttribute('data-index');
-  swapItems(dragStartIndex, dragEndIndex);
-
-  this.classList.remove('over');
-}
-
-// Swap list items that are drag and drop
-function swapItems(fromIndex, toIndex) {
-  const itemOne = listItems[fromIndex].querySelector('.draggable');
-  const itemTwo = listItems[toIndex].querySelector('.draggable');
-
-  listItems[fromIndex].appendChild(itemTwo);
-  listItems[toIndex].appendChild(itemOne);
-}
-
-// Check the order of list items
-function checkOrder() {
-  listItems.forEach((listItem, index) => {
-    const personName = listItem.querySelector('.draggable').innerText.trim();
-
-    if (personName !== richestPeople[index]) {
-      listItem.classList.add('wrong');
-    } else {
-      listItem.classList.remove('wrong');
-      listItem.classList.add('right');
+    if(nameerrorfunc.length==0){
+        nameer.innerHTML="Name is requierd"
+       return false
     }
-  });
+    // if(!nameerrorfunc.match(/^[A-Za-z]* s\ {1}[A-Za-z]*$/)){
+    //     nameer.innerHTML="please write full name" 
+    //     return false
+    // }
+    nameer.innerHTML="<i class='fas fa-check-circle'></i>"
+    return true
 }
-
-function addEventListeners() {
-  const draggables = document.querySelectorAll('.draggable');
-  const dragListItems = document.querySelectorAll('.draggable-list li');
-
-  draggables.forEach(draggable => {
-    draggable.addEventListener('dragstart', dragStart);
-  });
-
-  dragListItems.forEach(item => {
-    item.addEventListener('dragover', dragOver);
-    item.addEventListener('drop', dragDrop);
-    item.addEventListener('dragenter', dragEnter);
-    item.addEventListener('dragleave', dragLeave);
-  });
+function validationtel(){
+    let telerrorfunc=document.getElementById('contact-tel').value;
+    if(telerrorfunc.length==0){
+        
+        teler.innerHTML="phone is requierd"
+        return false
+    }
+    if(telerrorfunc.length!==8){
+        
+        teler.innerHTML="phone isnt more than 8 digit"
+        return false;
+    }
+    // if(!telerrorfunc.match(/^[0-7]{8}$/)){
+    //     teler.innerHTML="only digit" 
+    //     return false
+    // }
+    teler.innerHTML="<i class='fas fa-check-circle'></i>"
+    return true;
 }
+function validationemail(){
+    let emailerrorfunc=document.getElementById('contact-email').value;
 
-check.addEventListener('click', checkOrder);
+    if(emailerrorfunc.length==0){
+        emailer.innerHTML="email is requierd"
+        return false
+    }else
+    // if(!emailerrorfunc.match(/^[A-Za-z]\._\-[0-9]*[@][A-Za-z]*[\.][a-z]{2,4}$/)){
+    //     emailer.innerHTML="invalid email" 
+    //     return false
+    // }else
+    emailer.innerHTML="<i class='fas fa-check-circle'></i>"
+    return true
+}
+function validationmessage(){
+    let messageerrorfunc=document.getElementById('contact-message').value;
+   let requier=30
+   let left=requier-messageerrorfunc.length;
+   if(left>0){
+       texter.innerHTML=left+"more character left";
+       return false
+   }
+   texter.innerHTML="<i class='fas fa-check-circle'></i>";
+   return true;
+}
+function validationform(){
+    if(!validation() || !validationtel() || !validationemail()|| !validationmessage()){
+        submiter.innerHTML="please fix and make sure that you complete the form"
+        return false
+    }
+}
